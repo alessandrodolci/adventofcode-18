@@ -3,6 +3,7 @@ fabric = [[0]]
 with open("input.txt") as input_file:
     for line in input_file:
         tokens = line.split()
+        claim_id = tokens[0]
         distance_string = tokens[2]
         size_string = tokens[3]
 
