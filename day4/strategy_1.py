@@ -1,24 +1,6 @@
-import time
+import common
 
-def order_input(file_name):
-    input_file = open(file_name, "r")
-    output_file = open("input_chronological.txt", "w")
-    dates = []
-    # Dictionary to store references between timestamps and lines (could be improved)
-    date_lines = {}
-    for line in input_file:
-        tokens = line.split()
-        date_string = (tokens[0] + ' ' + tokens[1])[1:len(tokens[0])+len(tokens[1])]
-        dates.append(time.strptime(date_string, "%Y-%m-%d %H:%M"))
-        date_lines[date_string] = line
-    
-    dates.sort()
-    for date in dates:
-        date = time.strftime("%Y-%m-%d %H:%M", date)
-        output_file.write("%s" %date_lines[date])
-    return
-
-order_input("input.txt")
+common.order_input("input.txt", "input_chronological.txt")
 
 with open("input_chronological.txt", "r") as input_file:
     sleep_hours = {}
@@ -44,24 +26,19 @@ most_asleep_guard = None
 most_minutes_slept = 0
 for guard in sleep_hours:
     guard_minutes_slept = 0
-    times_slept = 0
     for i in range(60):
         guard_minutes_slept += sleep_hours[guard][i]
-        if sleep_hours[guard][i] > times_slept:
-            times_slept = sleep_hours[guard][i]
-    if guard_minutes_
-
-print(guard_most_slept_minute)slept > most_minutes_slept:
+    if guard_minutes_slept > most_minutes_slept:
         most_asleep_guard = guard
         most_minutes_slept = guard_minutes_slept
-
-most_asleep_guard = int(most_asleep_guard[1:])
 
 guard_most_slept_minute = -1
 guard_most_times_slept = 0
 for i in range(60):
-    if sleep_hours[guard][i] > guard_most_times_slept:
+    if sleep_hours[most_asleep_guard][i] > guard_most_times_slept:
         guard_most_slept_minute = i
-        guard_most_times_slept = sleep_hours[guard][i]
+        guard_most_times_slept = sleep_hours[most_asleep_guard][i]
+
+most_asleep_guard = int(most_asleep_guard[1:])
 
 print("Result: " + str(most_asleep_guard * guard_most_slept_minute))

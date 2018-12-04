@@ -20,7 +20,7 @@
 [1518-02-12 23:58] Guard #3449 begins shift
 [1518-02-14 00:01] Guard #2251 begins shift
 [1518-02-14 00:43] falls asleep
-[1518-02-14 00:50] wakes upimproved
+[1518-02-14 00:50] wakes up
 [1518-02-14 23:57] Guard #1597 begins shift
 [1518-02-15 00:34] falls asleep
 [1518-02-15 00:41] wakes up
