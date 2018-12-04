@@ -1,4 +1,7 @@
-fabric = [[0]]
+fabric = [[]]
+claims_count = 0
+fragments_count = None
+not_overlapping_id = None
 
 with open("input.txt") as input_file:
     for line in input_file:
@@ -15,20 +18,39 @@ with open("input.txt") as input_file:
 
         # Extending the fabric size, not necessary assuming a size of 1000 square inches
         for i in range(len(fabric), start_row+height):
-            fabric.append([0] * len(fabric[0]))
+            fabric.append([] * len(fabric[0]))
         for row in fabric:
             if len(row) < start_column+width:
-                row.extend([0] * (start_column+width-len(row)))
+                row.extend([[]] * (start_column+width-len(row)))
         
         # Adding up the current fragment
         for i in range(height):
             for j in range(width):
-                fabric[start_row+i][start_column+j] += 1
+                if not fabric[start_row+i][start_column+j]:
+                    fabric[start_row+i][start_column+j] = [claim_id]
+                else:
+                    fabric[start_row+i][start_column+j].append(claim_id)
+ 
+        claims_count += 1
 
-result = 0
+with open("input.txt") as input_file:
+    for line in input_file:
+        tokens = line.split()
+        claim_id = tokens[0]
+        not_overlapping = True
+        for row in fabric:
+            for column in row:
+                if claim_id in column and len(column) > 1:
+                    not_overlapping = False
+        if not_overlapping == True:
+            not_overlapping_id = claim_id
+            break
+
+fragments_count = 0
 for row in fabric:
     for fragment in row:
-        if fragment >= 2:
-            result += 1
+        if len(fragment) >= 2:
+            fragments_count += 1
 
-print(result)
+print("Fragments with two or more claims: " + str(fragments_count)
+    + "\nID of the non-overlapping claim: " + str(not_overlapping_id))
