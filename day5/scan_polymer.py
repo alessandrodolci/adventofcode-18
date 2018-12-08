@@ -1,35 +1,51 @@
-last_read = ''
-with open("input.txt", "r") as input_file:
-    with open("temp.txt", "w") as output_file:
+import shutil
+import string
+
+def reduce_polymers(input_file_name, output_file_name, char_to_exclude = ''):
+    shutil.copyfile(input_file_name, "temp.txt")
+
+    last_read = ''
+    modified = True
+    while modified == True:
+        with open("temp.txt", "r") as input_file:
+            with open(output_file_name, "w") as output_file:
+                modified = False
+                last_read = ''
+                
+                for line in input_file:
+                    for char in line:
+                        if char != last_read.swapcase() and char != char_to_exclude and char != char_to_exclude.swapcase():
+                            output_file.write("%s" %last_read)
+                            last_read = char
+                        elif char != char_to_exclude and char != char_to_exclude.swapcase():
+                            last_read = ''
+                            if modified == False:
+                                modified = True
+                
+                output_file.write("%s" %last_read)
+        if modified == True:
+            shutil.copyfile(output_file_name, "temp.txt")
+
+def count_units(input_file_name):
+    units = 0
+
+    with open(input_file_name, "r") as input_file:
         for line in input_file:
-            output_file.write(line)
+            for char in line:
+                units += 1
 
-modified = True
-while modified == True:
-    with open("temp.txt", "r") as input_file:
-        with open("output.txt", "w") as output_file:
-            modified = False
-            last_read = ''
-            for line in input_file:
-                for char in line:
-                    if char != last_read.swapcase():
-                        output_file.write("%s" %last_read)
-                        last_read = char
-                    else:
-                        print(last_read + ' ' + char)
-                        last_read = ''
-                        if modified == False:
-                            modified = True
-            output_file.write("%s" %last_read)
-    with open("output.txt", "r") as temp_input_file:
-        with open("temp.txt", "w") as temp_output_file:
-            for line in temp_input_file:
-                temp_output_file.write(line)
+    return units
 
-units = 0
-with open("output.txt", "r") as input_file:
-    for line in input_file:
-        for char in line:
-            units += 1
+reduce_polymers("input.txt", "output.txt")
+
+units = count_units("output.txt")
+
+best_length = units
+for char in string.ascii_lowercase:
+    reduce_polymers("input.txt", "output.txt", char)
+    current_units = count_units("output.txt")
+    if (current_units < best_length):
+        best_length = current_units
 
 print("Number of remaining units: " + str(units))
+print("Number of units in the best case: " + str(best_length))
